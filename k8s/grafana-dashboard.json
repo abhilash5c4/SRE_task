@@ -1,0 +1,63 @@
+{
+  "dashboard": {
+    "id": null,
+    "uid": null,
+    "title": "Metrics App + Node Overview",
+    "panels": [
+      {
+        "id": 1,
+        "type": "timeseries",
+        "title": "Request rate (example_app_requests_total)",
+        "targets": [
+          {
+            "expr": "sum(rate(example_app_requests_total[1m])) by (path)",
+            "format": "time_series",
+            "legendFormat": "{{path}}"
+          }
+        ],
+        "gridPos": { "h": 7, "w": 12, "x": 0, "y": 0 }
+      },
+      {
+        "id": 2,
+        "type": "timeseries",
+        "title": "In-progress requests (example_app_requests_inprogress)",
+        "targets": [
+          {
+            "expr": "sum(example_app_requests_inprogress)",
+            "format": "time_series",
+            "legendFormat": "inprogress"
+          }
+        ],
+        "gridPos": { "h": 5, "w": 12, "x": 12, "y": 0 }
+      },
+      {
+        "id": 3,
+        "type": "timeseries",
+        "title": "Request p95 latency (example_app_process_seconds)",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(example_app_process_seconds_bucket[5m])) by (le))",
+            "format": "time_series",
+            "legendFormat": "p95"
+          }
+        ],
+        "gridPos": { "h": 5, "w": 12, "x": 0, "y": 7 }
+      },
+      {
+        "id": 4,
+        "type": "timeseries",
+        "title": "Node CPU usage",
+        "targets": [
+          {
+            "expr": "1 - avg(rate(node_cpu_seconds_total{mode='idle'}[5m])) by (instance)",
+            "format": "time_series",
+            "legendFormat": "{{instance}}"
+          }
+        ],
+        "gridPos": { "h": 5, "w": 12, "x": 12, "y": 7 }
+      }
+    ],
+    "schemaVersion": 36
+  },
+  "overwrite": true
+}

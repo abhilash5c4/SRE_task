@@ -1,0 +1,52 @@
+{
+      "annotations": { "list": [] },
+      "description": "Dashboard showing example_app and node metrics",
+      "panels": [
+        {
+          "type": "graph",
+          "title": "Request rate (example_app_requests_total)",
+          "targets": [
+            {
+              "expr": "sum(rate(example_app_requests_total[1m])) by (path)",
+              "legendFormat": "{{path}}"
+            }
+          ],
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 }
+        },
+        {
+          "type": "graph",
+          "title": "In-progress requests (example_app_requests_inprogress)",
+          "targets": [
+            {
+              "expr": "sum(example_app_requests_inprogress)",
+              "legendFormat": "inprogress"
+            }
+          ],
+          "gridPos": { "h": 6, "w": 12, "x": 12, "y": 0 }
+        },
+        {
+          "type": "graph",
+          "title": "Request processing time (Histogram: example_app_process_seconds)",
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(example_app_process_seconds_bucket[1m])) by (le))",
+              "legendFormat": "p95"
+            }
+          ],
+          "gridPos": { "h": 6, "w": 12, "x": 0, "y": 8 }
+        },
+        {
+          "type": "graph",
+          "title": "Node CPU usage (node_exporter: node_cpu_seconds_total)",
+          "targets": [
+            {
+              "expr": "1 - avg(rate(node_cpu_seconds_total{mode='idle'}[5m])) by (instance)",
+              "legendFormat": "{{instance}}"
+            }
+          ],
+          "gridPos": { "h": 6, "w": 12, "x": 12, "y": 8 }
+        }
+      ],
+      "title": "Metrics App + Node Overview",
+      "schemaVersion": 16
+    }

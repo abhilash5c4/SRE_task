@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-alerts
+  namespace: monitoring-demo
+data:
+  alerts.rules: |
+    groups:
+      - name: example.rules
+        rules:
+          - alert: HighRequestLatency
+            expr: histogram_quantile(0.95, sum(rate(example_app_process_seconds_bucket[5m])) by (le)) > 1
+            for: 2m
+            labels:
+              severity: warning
+            annotations:
+              summary: "High p95 request latency for example-app"
+              description: "p95 request latency is > 1s"
